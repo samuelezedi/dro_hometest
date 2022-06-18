@@ -8,7 +8,11 @@ class PharmacyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      body: Column(children: const [GlobalHeader()]),
+      body: Column(children: const [
+        GlobalHeader(
+          headerTitle: 'Pharmacy',
+        )
+      ]),
     );
   }
 }
