@@ -43,11 +43,17 @@ class Header extends StatelessWidget {
           ),
           GlobalHeader(
             headerTitle: 'Pharmacy',
+            icon: const Icon(
+              HomeTestIcon.van,
+              color: Colors.white,
+              size: 20,
+            ),
             showSearchBar: true,
             showLeadingWidget: false,
             searchController: searchController,
             onChange: onChange,
           ),
+          Image.asset('')
         ],
       ),
     );

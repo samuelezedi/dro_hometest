@@ -1,5 +1,8 @@
 import 'package:dro_hometest/core/global/extensions/number_extensions.dart';
 import 'package:dro_hometest/core/global/widgets/item_widget.dart';
+import 'package:dro_hometest/features/hometest/data/models/drug_model.dart';
+import 'package:dro_hometest/features/hometest/domain/entities/drug.dart';
+import 'package:dro_hometest/features/hometest/presentation/pages/drug_detail_page.dart';
 import 'package:flutter/material.dart';
 
 class SearchResult extends StatelessWidget {
@@ -36,11 +39,18 @@ class SearchResult extends StatelessWidget {
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
                   crossAxisCount: 2, mainAxisExtent: 250, crossAxisSpacing: 30),
               itemBuilder: (_, index) {
+                final Drug drug = DrugModel.fromJson(list[index]).toEntity();
                 return ItemWidget(
-                    imageUrl: list[index]['image'].toString(),
-                    title: list[index]['name'].toString(),
-                    desc: list[index]['desc'].toString(),
-                    priceTag: list[index]['price'].toString());
+                    onTap: () {
+                      Navigator.push(
+                          context,
+                          MaterialPageRoute(
+                              builder: (context) => const DrugDetailPage()));
+                    },
+                    imageUrl: drug.image.toString(),
+                    title: drug.name.toString(),
+                    desc: drug.desc.toString(),
+                    priceTag: drug.image.toString());
               },
               itemCount: list.length,
               // padding: const EdgeInsets.all(20),

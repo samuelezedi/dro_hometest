@@ -64,7 +64,7 @@ class GlobalHeader extends StatelessWidget {
                       onPressed: () {},
                       icon: icon ??
                           const Icon(
-                            HomeTestIcon.van,
+                            HomeTestIcon.cart,
                             color: Colors.white,
                             size: 20,
                           ),

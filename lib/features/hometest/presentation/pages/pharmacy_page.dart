@@ -6,7 +6,10 @@ import 'package:dro_hometest/core/global/widgets/floating_action_button_widget.d
 import 'package:dro_hometest/core/global/widgets/global_header_widget.dart';
 import 'package:dro_hometest/core/global/widgets/global_widgets.dart';
 import 'package:dro_hometest/core/global/widgets/item_widget.dart';
+import 'package:dro_hometest/features/hometest/data/models/drug_model.dart';
+import 'package:dro_hometest/features/hometest/domain/entities/drug.dart';
 import 'package:dro_hometest/features/hometest/presentation/pages/categories_page.dart';
+import 'package:dro_hometest/features/hometest/presentation/pages/drug_detail_page.dart';
 import 'package:dro_hometest/features/hometest/presentation/pages/search_result_page.dart';
 import 'package:dro_hometest/features/hometest/presentation/widgets/header.dart';
 import 'package:dro_hometest/home_test_icon_icons.dart';
@@ -140,15 +143,21 @@ class _PharmacyPageState extends State<PharmacyPage> {
                                 mainAxisExtent: 250,
                                 crossAxisSpacing: 30),
                         itemBuilder: (_, index) {
+                          final Drug drug =
+                              DrugModel.fromJson(Constants.itemList[index])
+                                  .toEntity();
                           return ItemWidget(
-                              imageUrl:
-                                  Constants.itemList[index]['image'].toString(),
-                              title:
-                                  Constants.itemList[index]['name'].toString(),
-                              desc:
-                                  Constants.itemList[index]['desc'].toString(),
-                              priceTag: Constants.itemList[index]['price']
-                                  .toString());
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const DrugDetailPage()));
+                              },
+                              imageUrl: drug.image.toString(),
+                              title: drug.name.toString(),
+                              desc: drug.desc.toString(),
+                              priceTag: drug.price.toString());
                         },
                         itemCount: Constants.itemList.length,
                         // padding: const EdgeInsets.all(20),
