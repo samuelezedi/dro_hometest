@@ -7,13 +7,46 @@ import 'package:dro_hometest/core/global/widgets/global_header_widget.dart';
 import 'package:dro_hometest/core/global/widgets/global_widgets.dart';
 import 'package:dro_hometest/core/global/widgets/item_widget.dart';
 import 'package:dro_hometest/features/hometest/presentation/pages/categories_page.dart';
+import 'package:dro_hometest/features/hometest/presentation/pages/search_result_page.dart';
 import 'package:dro_hometest/features/hometest/presentation/widgets/header.dart';
 import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
 
-class PharmacyPage extends StatelessWidget {
-  static const pageRoute = '/pharmacy';
-  PharmacyPage({Key? key}) : super(key: key);
+class PharmacyPage extends StatefulWidget {
+  const PharmacyPage({Key? key}) : super(key: key);
+
+  @override
+  State<PharmacyPage> createState() => _PharmacyPageState();
+}
+
+class _PharmacyPageState extends State<PharmacyPage> {
+  var tempSearchStore = <Map<String, dynamic>>[];
+  TextEditingController searchText = TextEditingController();
+  bool showSearching = false;
+
+  void initiateSearch(value) {
+    if (value.length == 0) {
+      setState(() {
+        tempSearchStore = [];
+        showSearching = false;
+      });
+    } else {
+      setState(() {
+        showSearching = true;
+      });
+    }
+    var capitalisedValue =
+        value.substring(0, 1).toLowerCase() + value.substring(1);
+
+    tempSearchStore = [];
+    Constants.itemList.forEach((element) {
+      if (element['name']!.startsWith(capitalisedValue)) {
+        setState(() {
+          tempSearchStore.add(element);
+        });
+      }
+    });
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -28,85 +61,97 @@ class PharmacyPage extends StatelessWidget {
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
         child: Column(children: [
-          const Header(),
-          Container(
-            color: Colors.white,
-            child: Column(children: [
-              10.verticalGap,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                  children: [
-                    GWidgets.greyText('CATEGORY',
-                        fontWeight: FontWeight.bold, opacity: 0.4),
-                    InkWell(
-                      onTap: () {
-                        Navigator.push(
-                            context,
-                            MaterialPageRoute(
-                                builder: (context) => const CategoryPage()));
-                      },
-                      child: GWidgets.purpleText('VIEW ALL',
-                          fontWeight: FontWeight.bold),
+          Header(
+            searchController: searchText,
+            onChange: (value) {
+              initiateSearch(value);
+            },
+          ),
+          showSearching
+              ? SearchResult(list: tempSearchStore)
+              : Container(
+                  color: Colors.white,
+                  child: Column(children: [
+                    10.verticalGap,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Row(
+                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                        children: [
+                          GWidgets.greyText('CATEGORY',
+                              fontWeight: FontWeight.bold, opacity: 0.4),
+                          InkWell(
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) =>
+                                          const CategoryPage()));
+                            },
+                            child: GWidgets.purpleText('VIEW ALL',
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
                     ),
-                  ],
-                ),
-              ),
-              10.verticalGap,
-              Container(
-                height: 98,
-                child: ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    itemCount: Constants.categoryList.length,
-                    itemBuilder: (context, index) {
-                      return Padding(
-                        padding: const EdgeInsets.only(left: 24),
-                        child: CategoryWidget(
-                          imageUrl:
-                              Constants.categoryList[index]['image'].toString(),
-                          title:
-                              Constants.categoryList[index]['name'].toString(),
-                        ),
-                      );
-                    }),
-              ),
-              20.verticalGap,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: Row(
-                  children: [
-                    GWidgets.greyText('SUGGESTIONS',
-                        fontWeight: FontWeight.bold, opacity: 0.4),
-                  ],
-                ),
-              ),
-              10.verticalGap,
-              Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 24),
-                child: GridView.builder(
-                  padding: EdgeInsets.zero,
-                  shrinkWrap: true,
-                  physics: const NeverScrollableScrollPhysics(),
-                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                      crossAxisCount: 2,
-                      mainAxisExtent: 250,
-                      crossAxisSpacing: 30),
-                  itemBuilder: (_, index) {
-                    return ItemWidget(
-                        imageUrl: Constants.itemList[index]['image'].toString(),
-                        title: Constants.itemList[index]['name'].toString(),
-                        desc: Constants.itemList[index]['desc'].toString(),
-                        priceTag:
-                            Constants.itemList[index]['price'].toString());
-                  },
-                  itemCount: Constants.itemList.length,
-                  // padding: const EdgeInsets.all(20),
-                ),
-              ),
-            ]),
-          )
+                    10.verticalGap,
+                    Container(
+                      height: 98,
+                      child: ListView.builder(
+                          scrollDirection: Axis.horizontal,
+                          physics: const BouncingScrollPhysics(),
+                          itemCount: Constants.categoryList.length,
+                          itemBuilder: (context, index) {
+                            return Padding(
+                              padding: const EdgeInsets.only(left: 24),
+                              child: CategoryWidget(
+                                imageUrl: Constants.categoryList[index]['image']
+                                    .toString(),
+                                title: Constants.categoryList[index]['name']
+                                    .toString(),
+                              ),
+                            );
+                          }),
+                    ),
+                    20.verticalGap,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: Row(
+                        children: [
+                          GWidgets.greyText('SUGGESTIONS',
+                              fontWeight: FontWeight.bold, opacity: 0.4),
+                        ],
+                      ),
+                    ),
+                    10.verticalGap,
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 24),
+                      child: GridView.builder(
+                        padding: EdgeInsets.zero,
+                        shrinkWrap: true,
+                        physics: const NeverScrollableScrollPhysics(),
+                        gridDelegate:
+                            const SliverGridDelegateWithFixedCrossAxisCount(
+                                crossAxisCount: 2,
+                                mainAxisExtent: 250,
+                                crossAxisSpacing: 30),
+                        itemBuilder: (_, index) {
+                          return ItemWidget(
+                              imageUrl:
+                                  Constants.itemList[index]['image'].toString(),
+                              title:
+                                  Constants.itemList[index]['name'].toString(),
+                              desc:
+                                  Constants.itemList[index]['desc'].toString(),
+                              priceTag: Constants.itemList[index]['price']
+                                  .toString());
+                        },
+                        itemCount: Constants.itemList.length,
+                        // padding: const EdgeInsets.all(20),
+                      ),
+                    ),
+                  ]),
+                )
         ]),
       ),
     );

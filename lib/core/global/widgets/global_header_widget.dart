@@ -4,17 +4,21 @@ import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
 
 class GlobalHeader extends StatelessWidget {
-  const GlobalHeader(
+  GlobalHeader(
       {required this.headerTitle,
+      required this.searchController,
       this.showSearchBar = false,
       this.showLeadingWidget = true,
       this.icon,
+      this.onChange,
       Key? key})
       : super(key: key);
   final String headerTitle;
   final bool showSearchBar;
   final bool showLeadingWidget;
   final Widget? icon;
+  TextEditingController searchController;
+  Function(String v)? onChange;
 
   @override
   Widget build(BuildContext context) {
@@ -70,9 +74,12 @@ class GlobalHeader extends StatelessWidget {
                 ),
                 if (showSearchBar) 10.verticalGap,
                 if (showSearchBar)
-                  const Padding(
-                    padding: EdgeInsets.symmetric(horizontal: 20),
-                    child: SearchBar(),
+                  Padding(
+                    padding: const EdgeInsets.symmetric(horizontal: 20),
+                    child: SearchBar(
+                      textController: searchController,
+                      onChange: onChange,
+                    ),
                   )
               ],
             ),

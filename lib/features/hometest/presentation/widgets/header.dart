@@ -3,7 +3,10 @@ import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
 
 class Header extends StatelessWidget {
-  const Header({Key? key}) : super(key: key);
+  Header({required this.searchController, this.onChange, Key? key})
+      : super(key: key);
+  TextEditingController searchController;
+  Function(String v)? onChange;
 
   @override
   Widget build(BuildContext context) {
@@ -38,10 +41,12 @@ class Header extends StatelessWidget {
               ),
             ),
           ),
-          const GlobalHeader(
+          GlobalHeader(
             headerTitle: 'Pharmacy',
             showSearchBar: true,
             showLeadingWidget: false,
+            searchController: searchController,
+            onChange: onChange,
           ),
         ],
       ),

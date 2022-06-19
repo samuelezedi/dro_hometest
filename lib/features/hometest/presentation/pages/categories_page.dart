@@ -13,9 +13,10 @@ class CategoryPage extends StatelessWidget {
     return Scaffold(
       body: Column(
         children: [
-          const GlobalHeader(
+          GlobalHeader(
+            searchController: TextEditingController(),
             headerTitle: 'Categories',
-            icon: Icon(
+            icon: const Icon(
               HomeTestIcon.cart,
               size: 20,
               color: Colors.white,
