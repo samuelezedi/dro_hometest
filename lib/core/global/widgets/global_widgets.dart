@@ -5,7 +5,7 @@ class GWidgets {
     return const LinearGradient(
         begin: Alignment.centerLeft,
         end: Alignment.centerRight,
-        colors: [Colors.purple, Colors.blue]);
+        colors: [Color(0xFFFE806F), Color(0xFFE5366A)]);
   }
 
   static Widget greyText(String text,
@@ -23,13 +23,14 @@ class GWidgets {
     );
   }
 
-  static Widget purpleText(String text) {
+  static Widget purpleText(String text,
+      {double fontSize = 16, FontWeight fontWeight = FontWeight.normal}) {
     return Text(
       text,
-      style: const TextStyle(
-        color: Color(0xFF9F5DE2),
-        fontSize: 16,
-      ),
+      style: TextStyle(
+          color: const Color(0xFF9F5DE2),
+          fontSize: fontSize,
+          fontWeight: fontWeight),
     );
   }
 

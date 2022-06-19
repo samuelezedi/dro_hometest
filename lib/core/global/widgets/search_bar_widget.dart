@@ -12,10 +12,18 @@ class SearchBar extends StatelessWidget {
           color: Colors.white.withOpacity(0.3),
           borderRadius: BorderRadius.circular(10)),
       child: const TextField(
+        style: TextStyle(color: Colors.white, fontSize: 18),
+        cursorColor: Colors.white,
         decoration: InputDecoration(
+            contentPadding: EdgeInsets.all(0),
             border: InputBorder.none,
             hintText: 'Search',
-            prefixIcon: Icon(HomeTestIcon.search)),
+            hintStyle: TextStyle(color: Colors.white, fontSize: 18),
+            prefixIcon: Icon(
+              HomeTestIcon.search,
+              size: 15,
+              color: Colors.white,
+            )),
       ),
     );
   }

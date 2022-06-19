@@ -1,3 +1,5 @@
+import 'package:dro_hometest/core/global/extensions/number_extensions.dart';
+import 'package:dro_hometest/core/global/widgets/search_bar_widget.dart';
 import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
 
@@ -8,17 +10,17 @@ class GlobalHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: 171,
+      height: MediaQuery.of(context).size.height * 0.20,
       child: Stack(
         children: [
           Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [Image.asset('assets/images/circles.png')]),
           Padding(
-            padding: const EdgeInsets.symmetric(horizontal: 24),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 24),
             child: Column(
               children: [
-                const SizedBox(height: 80),
+                40.verticalGap,
                 Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
@@ -34,10 +36,13 @@ class GlobalHeader extends StatelessWidget {
                       icon: const Icon(
                         HomeTestIcon.van,
                         color: Colors.white,
+                        size: 20,
                       ),
                     )
                   ],
                 ),
+                10.verticalGap,
+                SearchBar()
               ],
             ),
           )

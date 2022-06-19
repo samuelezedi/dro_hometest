@@ -9,6 +9,18 @@ class CategoryWidget extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Container(
+      width: 125,
+      child: Container(
+        decoration: BoxDecoration(
+            borderRadius: BorderRadius.circular(10),
+            color: Colors.black.withOpacity(0.6)),
+        child: Center(
+            child: Text(
+          title,
+          style: const TextStyle(
+              color: Colors.white, fontSize: 14, fontWeight: FontWeight.bold),
+        )),
+      ),
       decoration: BoxDecoration(
           borderRadius: BorderRadius.circular(10),
           image:

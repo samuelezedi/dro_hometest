@@ -1,7 +1,9 @@
 import 'package:dro_hometest/app.dart';
+import 'package:dro_hometest/core/global/screen_utils/screen_util_setup.dart';
 import 'package:flutter/material.dart';
 
 void main() {
+  WidgetsFlutterBinding.ensureInitialized();
   runApp(const MyApp());
 }
 
@@ -11,11 +13,14 @@ class MyApp extends StatelessWidget {
   // This widget is the root of your application.
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      debugShowCheckedModeBanner: false,
-      title: 'HomeTest App',
-      theme: ThemeData(primarySwatch: Colors.blue, fontFamily: 'Proxima Nova'),
-      home: const HomeTestApp(),
+    return ScreenUtilSetup(
+      child: MaterialApp(
+        debugShowCheckedModeBanner: false,
+        title: 'HomeTest App',
+        theme:
+            ThemeData(primarySwatch: Colors.blue, fontFamily: 'Proxima Nova'),
+        home: const HomeTestApp(),
+      ),
     );
   }
 }
