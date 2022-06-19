@@ -23,24 +23,24 @@ class _PharmacyPageState extends State<PharmacyPage> {
   var tempSearchStore = <Map<String, dynamic>>[];
   TextEditingController searchText = TextEditingController();
   bool showSearching = false;
+  bool showSearchNotFound = false;
 
   void initiateSearch(value) {
     if (value.length == 0) {
       setState(() {
         tempSearchStore = [];
         showSearching = false;
+        showSearchNotFound = false;
       });
     } else {
       setState(() {
         showSearching = true;
       });
     }
-    var capitalisedValue =
-        value.substring(0, 1).toLowerCase() + value.substring(1);
 
     tempSearchStore = [];
     Constants.itemList.forEach((element) {
-      if (element['name']!.startsWith(capitalisedValue)) {
+      if (element['name']!.toLowerCase().contains(value.toLowerCase())) {
         setState(() {
           tempSearchStore.add(element);
         });
@@ -68,7 +68,11 @@ class _PharmacyPageState extends State<PharmacyPage> {
             },
           ),
           showSearching
-              ? SearchResult(list: tempSearchStore)
+              ? SearchResult(
+                  list: tempSearchStore,
+                  searchNotFound: showSearchNotFound,
+                  searchText: searchText.text.toString(),
+                )
               : Container(
                   color: Colors.white,
                   child: Column(children: [
