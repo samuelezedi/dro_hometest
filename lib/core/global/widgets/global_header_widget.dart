@@ -1,3 +1,5 @@
+import 'dart:io';
+
 import 'package:dro_hometest/core/global/extensions/number_extensions.dart';
 import 'package:dro_hometest/core/global/widgets/search_bar_widget.dart';
 import 'package:dro_hometest/home_test_icon_icons.dart';
@@ -10,6 +12,8 @@ class GlobalHeader extends StatelessWidget {
       required this.searchController,
       this.showSearchBar = false,
       this.showLeadingWidget = true,
+      this.leadingIconShow = false,
+      this.trailingIconShow = true,
       this.icon,
       this.onChange,
       Key? key})
@@ -20,23 +24,23 @@ class GlobalHeader extends StatelessWidget {
   final Widget? icon;
   TextEditingController searchController;
   Function(String v)? onChange;
+  final bool leadingIconShow;
+  final bool trailingIconShow;
 
   @override
   Widget build(BuildContext context) {
     return Container(
-      height: showSearchBar
-          ? MediaQuery.of(context).size.height * 0.20
-          : MediaQuery.of(context).size.height * 0.15,
+      height: showSearchBar ? MediaQuery.of(context).size.height : 120,
+      padding: const EdgeInsets.only(bottom: 25),
       child: Stack(
         children: [
           Row(
               mainAxisAlignment: MainAxisAlignment.end,
               children: [Image.asset('assets/images/circles.png')]),
-          Padding(
-            padding: const EdgeInsets.symmetric(vertical: 24),
+          SizedBox(
             child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
               children: [
-                40.verticalGap,
                 Row(
                   children: [
                     if (showLeadingWidget)
@@ -51,6 +55,10 @@ class GlobalHeader extends StatelessWidget {
                         ),
                       ),
                     20.horizontalGap,
+                    if (leadingIconShow)
+                      const Icon(HomeTestIcon.cart,
+                          color: Colors.white, size: 25),
+                    if (leadingIconShow) 15.horizontalGap,
                     Text(
                       headerTitle,
                       style: const TextStyle(
@@ -61,15 +69,16 @@ class GlobalHeader extends StatelessWidget {
                     Expanded(
                       child: Container(),
                     ),
-                    IconButton(
-                      onPressed: () {},
-                      icon: icon ??
-                          const Icon(
-                            HomeTestIcon.cart,
-                            color: Colors.white,
-                            size: 20,
-                          ),
-                    ),
+                    if (trailingIconShow)
+                      IconButton(
+                        onPressed: () {},
+                        icon: icon ??
+                            const Icon(
+                              HomeTestIcon.cart,
+                              color: Colors.white,
+                              size: 20,
+                            ),
+                      ),
                     15.horizontalGap,
                   ],
                 ),

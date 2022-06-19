@@ -82,7 +82,12 @@ class GWidgets {
     );
   }
 
-  static void showBottomSheet(BuildContext context, String text) {
+  static void showBottomSheet(
+    BuildContext context,
+    String text, {
+    Function()? continueShopping,
+    Function()? viewCart,
+  }) {
     showModalBottomSheet(
         context: context,
         shape: const RoundedRectangleBorder(
@@ -101,12 +106,11 @@ class GWidgets {
                         fontSize: 20, fontWeight: FontWeight.normal)),
                 40.verticalGap,
                 GButtons.purpleGradient('VIEW CART', () {
-                  Navigator.pop(context);
+                  viewCart!();
                 }),
                 15.verticalGap,
                 GButtons.purpleOutlined('CONTINUE SHOPPING', () {
-                  Navigator.pop(context);
-                  Navigator.pop(context);
+                  continueShopping!();
                 }),
                 20.verticalGap
               ],

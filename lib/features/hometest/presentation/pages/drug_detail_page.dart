@@ -6,6 +6,7 @@ import 'package:dro_hometest/core/global/widgets/global_widgets.dart';
 import 'package:dro_hometest/core/global/widgets/item_widget.dart';
 import 'package:dro_hometest/features/hometest/data/models/drug_model.dart';
 import 'package:dro_hometest/features/hometest/domain/entities/drug.dart';
+import 'package:dro_hometest/features/hometest/presentation/pages/cart_page.dart';
 import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
 
@@ -251,11 +252,18 @@ class _DrugDetailPageState extends State<DrugDetailPage> {
           ),
           Container(
               padding: const EdgeInsets.only(
-                  left: 25, right: 25, bottom: 50, top: 25),
+                  left: 25, right: 25, bottom: 25, top: 25),
               color: Colors.white,
               child: GButtons.purpleGradient('Add to cart', () {
                 GWidgets.showBottomSheet(context,
-                    '${widget.drug.name} has been successfully added to cart!');
+                    '${widget.drug.name} has been successfully added to cart!',
+                    continueShopping: () {
+                  Navigator.pop(context);
+                }, viewCart: () {
+                  Navigator.pop(context);
+                  Navigator.push(context,
+                      MaterialPageRoute(builder: (context) => CartPage()));
+                });
               }))
         ],
       ),

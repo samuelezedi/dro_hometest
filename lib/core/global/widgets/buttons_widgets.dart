@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 
 class GButtons {
   static Widget purpleGradient(String text, Function() onTap) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         onTap();
       },
@@ -35,7 +35,7 @@ class GButtons {
   }
 
   static Widget purpleOutlined(String text, Function() onTap) {
-    return GestureDetector(
+    return InkWell(
       onTap: () {
         onTap();
       },

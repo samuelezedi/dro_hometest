@@ -61,14 +61,18 @@ class _PharmacyPageState extends State<PharmacyPage> {
         onTap: (index) {},
       ),
       backgroundColor: Colors.white,
+      appBar: AppBar(
+        elevation: 0,
+        toolbarHeight: 150,
+        flexibleSpace: Header(
+          searchController: searchText,
+          onChange: (value) {
+            initiateSearch(value);
+          },
+        ),
+      ),
       body: SingleChildScrollView(
         child: Column(children: [
-          Header(
-            searchController: searchText,
-            onChange: (value) {
-              initiateSearch(value);
-            },
-          ),
           showSearching
               ? SearchResult(
                   list: tempSearchStore,
