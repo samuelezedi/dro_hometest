@@ -35,10 +35,15 @@ class GlobalHeader extends StatelessWidget {
                 Row(
                   children: [
                     if (showLeadingWidget)
-                      const Icon(
-                        HomeTestIcon.back,
-                        color: Colors.white,
-                        size: 30,
+                      IconButton(
+                        onPressed: () {
+                          Navigator.pop(context);
+                        },
+                        icon: const Icon(
+                          HomeTestIcon.back,
+                          color: Colors.white,
+                          size: 30,
+                        ),
                       ),
                     20.horizontalGap,
                     Text(
