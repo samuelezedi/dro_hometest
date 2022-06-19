@@ -37,20 +37,27 @@ class SearchResult extends StatelessWidget {
               shrinkWrap: true,
               physics: const NeverScrollableScrollPhysics(),
               gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                  crossAxisCount: 2, mainAxisExtent: 250, crossAxisSpacing: 30),
+                  crossAxisCount: 2, mainAxisExtent: 290, crossAxisSpacing: 30),
               itemBuilder: (_, index) {
                 final Drug drug = DrugModel.fromJson(list[index]).toEntity();
                 return ItemWidget(
-                    onTap: () {
-                      Navigator.push(
-                          context,
-                          MaterialPageRoute(
-                              builder: (context) => const DrugDetailPage()));
-                    },
-                    imageUrl: drug.image.toString(),
-                    title: drug.name.toString(),
-                    desc: drug.desc.toString(),
-                    priceTag: drug.image.toString());
+                  onTap: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => DrugDetailPage(
+                                  drug: drug,
+                                )));
+                  },
+                  showShadow: false,
+                  imageUrl: drug.image.toString(),
+                  title: drug.name.toString(),
+                  desc: drug.desc.toString(),
+                  priceTag: drug.price.toString(),
+                  showBorder: true,
+                  showAddToCart: true,
+                  requiredPres: drug.requiresPres,
+                );
               },
               itemCount: list.length,
               // padding: const EdgeInsets.all(20),

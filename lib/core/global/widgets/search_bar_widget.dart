@@ -1,6 +1,7 @@
 import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class SearchBar extends StatelessWidget {
   SearchBar({required this.textController, this.onChange, Key? key})
       : super(key: key);

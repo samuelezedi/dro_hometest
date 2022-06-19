@@ -3,6 +3,7 @@ import 'package:dro_hometest/core/global/widgets/global_widgets.dart';
 import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class GFloatingActionButton extends StatelessWidget {
   GFloatingActionButton({required this.cartCount, Key? key}) : super(key: key) {
     small = false;
@@ -23,10 +24,11 @@ class GFloatingActionButton extends StatelessWidget {
               FloatingActionButton.small(
                   onPressed: () {},
                   child: Container(
-                    padding: EdgeInsets.only(right: 5),
+                    padding: const EdgeInsets.only(right: 5),
                     decoration: BoxDecoration(
                         border: Border.all(color: Colors.white, width: 2),
-                        gradient: GWidgets.linearGradient(),
+                        gradient: GWidgets.linearGradient(
+                            const Color(0xFFFE806F), const Color(0xFFE5366A)),
                         borderRadius: BorderRadius.circular(50)),
                     child: const Align(
                       alignment: Alignment.center,
@@ -65,7 +67,8 @@ class GFloatingActionButton extends StatelessWidget {
               padding: const EdgeInsets.all(12),
               decoration: BoxDecoration(
                   border: Border.all(color: Colors.white, width: 2),
-                  gradient: GWidgets.linearGradient(),
+                  gradient: GWidgets.linearGradient(
+                      const Color(0xFFFE806F), const Color(0xFFE5366A)),
                   borderRadius: BorderRadius.circular(50)),
               child: Row(
                 children: [

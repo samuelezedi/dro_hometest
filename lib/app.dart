@@ -13,7 +13,7 @@ class HomeTestApp extends StatelessWidget {
       providers: [
         BlocProvider(create: (context) => getIt<HomeTestBloc>()),
       ],
-      child: PharmacyPage(),
+      child: const PharmacyPage(),
     );
   }
 }

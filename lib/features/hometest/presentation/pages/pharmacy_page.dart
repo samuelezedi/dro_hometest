@@ -3,7 +3,6 @@ import 'package:dro_hometest/core/global/extensions/number_extensions.dart';
 import 'package:dro_hometest/core/global/widgets/buttom_navigation_widget.dart';
 import 'package:dro_hometest/core/global/widgets/category_widget.dart';
 import 'package:dro_hometest/core/global/widgets/floating_action_button_widget.dart';
-import 'package:dro_hometest/core/global/widgets/global_header_widget.dart';
 import 'package:dro_hometest/core/global/widgets/global_widgets.dart';
 import 'package:dro_hometest/core/global/widgets/item_widget.dart';
 import 'package:dro_hometest/features/hometest/data/models/drug_model.dart';
@@ -12,7 +11,6 @@ import 'package:dro_hometest/features/hometest/presentation/pages/categories_pag
 import 'package:dro_hometest/features/hometest/presentation/pages/drug_detail_page.dart';
 import 'package:dro_hometest/features/hometest/presentation/pages/search_result_page.dart';
 import 'package:dro_hometest/features/hometest/presentation/widgets/header.dart';
-import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
 
 class PharmacyPage extends StatefulWidget {
@@ -42,6 +40,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
     }
 
     tempSearchStore = [];
+    // ignore: avoid_function_literals_in_foreach_calls
     Constants.itemList.forEach((element) {
       if (element['name']!.toLowerCase().contains(value.toLowerCase())) {
         setState(() {
@@ -58,7 +57,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
         cartCount: 2,
       ),
       bottomNavigationBar: GBottomNavigation(
-        currentIndex: 1,
+        currentIndex: 2,
         onTap: (index) {},
       ),
       backgroundColor: Colors.white,
@@ -102,7 +101,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
                       ),
                     ),
                     10.verticalGap,
-                    Container(
+                    SizedBox(
                       height: 98,
                       child: ListView.builder(
                           scrollDirection: Axis.horizontal,
@@ -147,17 +146,20 @@ class _PharmacyPageState extends State<PharmacyPage> {
                               DrugModel.fromJson(Constants.itemList[index])
                                   .toEntity();
                           return ItemWidget(
-                              onTap: () {
-                                Navigator.push(
-                                    context,
-                                    MaterialPageRoute(
-                                        builder: (context) =>
-                                            const DrugDetailPage()));
-                              },
-                              imageUrl: drug.image.toString(),
-                              title: drug.name.toString(),
-                              desc: drug.desc.toString(),
-                              priceTag: drug.price.toString());
+                            onTap: () {
+                              Navigator.push(
+                                  context,
+                                  MaterialPageRoute(
+                                      builder: (context) => DrugDetailPage(
+                                            drug: drug,
+                                          )));
+                            },
+                            imageUrl: drug.image.toString(),
+                            title: drug.name.toString(),
+                            desc: drug.desc.toString(),
+                            priceTag: drug.price.toString(),
+                            requiredPres: drug.requiresPres,
+                          );
                         },
                         itemCount: Constants.itemList.length,
                         // padding: const EdgeInsets.all(20),

@@ -2,6 +2,7 @@ import 'package:dro_hometest/core/global/widgets/global_header_widget.dart';
 import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class Header extends StatelessWidget {
   Header({required this.searchController, this.onChange, Key? key})
       : super(key: key);
@@ -10,7 +11,7 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Container(
+    return SizedBox(
       height: 240,
       child: Stack(
         children: [
@@ -53,7 +54,6 @@ class Header extends StatelessWidget {
             searchController: searchController,
             onChange: onChange,
           ),
-          Image.asset('')
         ],
       ),
     );

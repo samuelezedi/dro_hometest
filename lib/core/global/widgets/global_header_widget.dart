@@ -3,6 +3,7 @@ import 'package:dro_hometest/core/global/widgets/search_bar_widget.dart';
 import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
 
+// ignore: must_be_immutable
 class GlobalHeader extends StatelessWidget {
   GlobalHeader(
       {required this.headerTitle,

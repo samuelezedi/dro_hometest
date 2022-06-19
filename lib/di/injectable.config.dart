@@ -12,6 +12,7 @@ import 'package:injectable/injectable.dart'
 /// initializes the registration of provided dependencies inside of [GetIt]
 _i1.GetIt $initGetIt(_i1.GetIt get,
     {String? environment, _i2.EnvironmentFilter? environmentFilter}) {
+  // ignore: unused_local_variable
   final gh = _i2.GetItHelper(get, environment, environmentFilter);
   return get;
 }

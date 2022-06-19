@@ -17,8 +17,8 @@ class MyApp extends StatelessWidget {
       child: MaterialApp(
         debugShowCheckedModeBanner: false,
         title: 'HomeTest App',
-        theme:
-            ThemeData(primarySwatch: Colors.blue, fontFamily: 'Proxima Nova'),
+        theme: ThemeData(
+            primarySwatch: Colors.deepPurple, fontFamily: 'Proxima Nova'),
         home: const HomeTestApp(),
       ),
     );
