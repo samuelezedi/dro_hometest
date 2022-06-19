@@ -11,52 +11,17 @@ class Header extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: Stack(
-        children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            color: const Color(0xFFF2F2F2),
-            padding: const EdgeInsets.only(left: 24, bottom: 10, top: 20),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Row(
-                  children: const [
-                    Icon(
-                      HomeTestIcon.location_pin,
-                      size: 15,
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(text: ' Delivery in '),
-                          TextSpan(
-                            text: 'Lagos, NG',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
-                      ),
-                    )
-                  ],
-                ),
-              ],
-            ),
-          ),
-          GlobalHeader(
-            headerTitle: 'Pharmacy',
-            icon: const Icon(
-              HomeTestIcon.van,
-              color: Colors.white,
-              size: 20,
-            ),
-            showSearchBar: true,
-            showLeadingWidget: false,
-            searchController: searchController,
-            onChange: onChange,
-          ),
-        ],
+    return GlobalHeader(
+      headerTitle: 'Pharmacy',
+      icon: const Icon(
+        HomeTestIcon.van,
+        color: Colors.white,
+        size: 20,
       ),
+      showSearchBar: true,
+      showLeadingWidget: false,
+      searchController: searchController,
+      onChange: onChange,
     );
   }
 }

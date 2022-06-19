@@ -1,4 +1,5 @@
 import 'package:dro_hometest/features/hometest/presentation/bloc/home_test_bloc.dart';
+import 'package:dro_hometest/features/hometest/presentation/cubit/cart_cubit.dart';
 import 'package:get_it/get_it.dart';
 import 'package:injectable/injectable.dart';
 import 'package:dro_hometest/di/injectable.config.dart';
@@ -20,4 +21,7 @@ Future<void> configureDependencies(String environment) async {
 abstract class RegisterModule {
   @singleton
   HomeTestBloc homeTestBloc() => HomeTestBloc();
+
+  @singleton
+  CartCubit cubitCubit() => CartCubit();
 }

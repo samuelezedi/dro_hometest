@@ -5,13 +5,20 @@ import 'package:dro_hometest/core/global/widgets/category_widget.dart';
 import 'package:dro_hometest/core/global/widgets/floating_action_button_widget.dart';
 import 'package:dro_hometest/core/global/widgets/global_widgets.dart';
 import 'package:dro_hometest/core/global/widgets/item_widget.dart';
+import 'package:dro_hometest/di/injectable.dart';
+import 'package:dro_hometest/features/hometest/data/models/cart_model.dart';
 import 'package:dro_hometest/features/hometest/data/models/drug_model.dart';
+import 'package:dro_hometest/features/hometest/domain/entities/cart.dart';
 import 'package:dro_hometest/features/hometest/domain/entities/drug.dart';
+import 'package:dro_hometest/features/hometest/presentation/bloc/home_test_bloc.dart';
+import 'package:dro_hometest/features/hometest/presentation/cubit/cart_cubit.dart';
 import 'package:dro_hometest/features/hometest/presentation/pages/categories_page.dart';
 import 'package:dro_hometest/features/hometest/presentation/pages/drug_detail_page.dart';
 import 'package:dro_hometest/features/hometest/presentation/pages/search_result_page.dart';
 import 'package:dro_hometest/features/hometest/presentation/widgets/header.dart';
+import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
+import 'package:flutter_bloc/flutter_bloc.dart';
 
 class PharmacyPage extends StatefulWidget {
   const PharmacyPage({Key? key}) : super(key: key);
@@ -53,8 +60,27 @@ class _PharmacyPageState extends State<PharmacyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: GFloatingActionButton.small(
-        cartCount: 2,
+      floatingActionButton: BlocListener<HomeTestBloc, HomeTestState>(
+        bloc: getIt<HomeTestBloc>(),
+        listener: (context, state) {
+          if (state is CartItemsLoaded) {
+            final cart = <Cart>[];
+            for (var element in state.cart) {
+              final string = element.split("-");
+              cart.add(CartModel.fromJson({
+                'cart_id': string[0],
+                'item_id': string[1],
+                'qunatity': string[2]
+              }).toEntity());
+            }
+            getIt<CartCubit>().setData(cart);
+          }
+
+          if (state is CartItemsLoadFail) {}
+        },
+        child: GFloatingActionButton.small(
+          cartCount: getIt<CartCubit>().state!.length,
+        ),
       ),
       bottomNavigationBar: GBottomNavigation(
         currentIndex: 2,
@@ -62,6 +88,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
       ),
       backgroundColor: Colors.white,
       appBar: AppBar(
+        backgroundColor: const Color(0xFFF2F2F2),
         elevation: 0,
         toolbarHeight: 150,
         flexibleSpace: Header(
@@ -73,6 +100,35 @@ class _PharmacyPageState extends State<PharmacyPage> {
       ),
       body: SingleChildScrollView(
         child: Column(children: [
+          Container(
+            width: MediaQuery.of(context).size.width,
+            color: const Color(0xFFF2F2F2),
+            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
+            child: Column(
+              mainAxisAlignment: MainAxisAlignment.end,
+              children: [
+                Row(
+                  children: const [
+                    Icon(
+                      HomeTestIcon.location_pin,
+                      size: 15,
+                    ),
+                    Text.rich(
+                      TextSpan(
+                        children: [
+                          TextSpan(text: ' Delivery in '),
+                          TextSpan(
+                            text: 'Lagos, NG',
+                            style: TextStyle(fontWeight: FontWeight.bold),
+                          ),
+                        ],
+                      ),
+                    )
+                  ],
+                ),
+              ],
+            ),
+          ),
           showSearching
               ? SearchResult(
                   list: tempSearchStore,
@@ -156,6 +212,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
                                   MaterialPageRoute(
                                       builder: (context) => DrugDetailPage(
                                             drug: drug,
+                                            index: index,
                                           )));
                             },
                             imageUrl: drug.image.toString(),

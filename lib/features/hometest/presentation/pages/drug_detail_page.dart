@@ -4,21 +4,29 @@ import 'package:dro_hometest/core/global/widgets/buttons_widgets.dart';
 import 'package:dro_hometest/core/global/widgets/global_header_widget.dart';
 import 'package:dro_hometest/core/global/widgets/global_widgets.dart';
 import 'package:dro_hometest/core/global/widgets/item_widget.dart';
+import 'package:dro_hometest/di/injectable.dart';
+import 'package:dro_hometest/features/hometest/data/models/cart_model.dart';
 import 'package:dro_hometest/features/hometest/data/models/drug_model.dart';
+import 'package:dro_hometest/features/hometest/domain/entities/cart.dart';
 import 'package:dro_hometest/features/hometest/domain/entities/drug.dart';
+import 'package:dro_hometest/features/hometest/presentation/bloc/home_test_bloc.dart';
 import 'package:dro_hometest/features/hometest/presentation/pages/cart_page.dart';
 import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
 
 class DrugDetailPage extends StatefulWidget {
-  const DrugDetailPage({required this.drug, Key? key}) : super(key: key);
+  const DrugDetailPage({required this.drug, required this.index, Key? key})
+      : super(key: key);
   final Drug drug;
+  final int index;
 
   @override
   State<DrugDetailPage> createState() => _DrugDetailPageState();
 }
 
 class _DrugDetailPageState extends State<DrugDetailPage> {
+  final int quantity = 0;
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -255,6 +263,12 @@ class _DrugDetailPageState extends State<DrugDetailPage> {
                   left: 25, right: 25, bottom: 25, top: 25),
               color: Colors.white,
               child: GButtons.purpleGradient('Add to cart', () {
+                Cart cart = CartModel(
+                        itemId: widget.index,
+                        cartId: "${widget.index}**cartID",
+                        quantity: quantity)
+                    .toEntity();
+                getIt<HomeTestBloc>().add(AddCartItem(cart));
                 GWidgets.showBottomSheet(context,
                     '${widget.drug.name} has been successfully added to cart!',
                     continueShopping: () {

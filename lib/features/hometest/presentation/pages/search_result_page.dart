@@ -47,6 +47,7 @@ class SearchResult extends StatelessWidget {
                         MaterialPageRoute(
                             builder: (context) => DrugDetailPage(
                                   drug: drug,
+                                  index: index,
                                 )));
                   },
                   showShadow: false,
