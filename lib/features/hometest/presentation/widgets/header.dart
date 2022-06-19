@@ -40,6 +40,8 @@ class Header extends StatelessWidget {
           ),
           const GlobalHeader(
             headerTitle: 'Pharmacy',
+            showSearchBar: true,
+            showLeadingWidget: false,
           ),
         ],
       ),

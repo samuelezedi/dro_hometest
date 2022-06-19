@@ -1,4 +1,5 @@
 import 'package:dro_hometest/core/global/extensions/number_extensions.dart';
+import 'package:dro_hometest/core/global/widgets/buttom_navigation_widget.dart';
 import 'package:dro_hometest/core/global/widgets/category_widget.dart';
 import 'package:dro_hometest/core/global/widgets/floating_action_button_widget.dart';
 import 'package:dro_hometest/core/global/widgets/global_header_widget.dart';
@@ -63,8 +64,12 @@ class PharmacyPage extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: const GFloatingActionButton(
+      floatingActionButton: GFloatingActionButton.small(
         cartCount: 2,
+      ),
+      bottomNavigationBar: GBottomNavigation(
+        currentIndex: 1,
+        onTap: (index) {},
       ),
       backgroundColor: Colors.white,
       body: SingleChildScrollView(
@@ -113,20 +118,27 @@ class PharmacyPage extends StatelessWidget {
                   ],
                 ),
               ),
-              GridView.builder(
-                shrinkWrap: true,
-                physics: const NeverScrollableScrollPhysics(),
-                gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
-                    crossAxisCount: 2, mainAxisExtent: 250),
-                itemBuilder: (_, index) {
-                  return ItemWidget(
-                      imageUrl: itemList[index]['image'].toString(),
-                      title: itemList[index]['name'].toString(),
-                      desc: itemList[index]['desc'].toString(),
-                      priceTag: itemList[index]['price'].toString());
-                },
-                itemCount: itemList.length,
-                // padding: const EdgeInsets.all(20),
+              10.verticalGap,
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 24),
+                child: GridView.builder(
+                  padding: EdgeInsets.zero,
+                  shrinkWrap: true,
+                  physics: const NeverScrollableScrollPhysics(),
+                  gridDelegate: const SliverGridDelegateWithFixedCrossAxisCount(
+                      crossAxisCount: 2,
+                      mainAxisExtent: 250,
+                      crossAxisSpacing: 30),
+                  itemBuilder: (_, index) {
+                    return ItemWidget(
+                        imageUrl: itemList[index]['image'].toString(),
+                        title: itemList[index]['name'].toString(),
+                        desc: itemList[index]['desc'].toString(),
+                        priceTag: itemList[index]['price'].toString());
+                  },
+                  itemCount: itemList.length,
+                  // padding: const EdgeInsets.all(20),
+                ),
               ),
             ]),
           )

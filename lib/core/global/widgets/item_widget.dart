@@ -28,17 +28,8 @@ class _ItemWidgetState extends State<ItemWidget> {
   @override
   Widget build(BuildContext context) {
     return Container(
-      margin: const EdgeInsets.symmetric(vertical: 10, horizontal: 24),
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(10),
-        boxShadow: [
-          BoxShadow(
-            color: Colors.grey.withOpacity(0.2),
-            spreadRadius: 1,
-            blurRadius: 7,
-            offset: const Offset(0, 2), // changes position of shadow
-          ),
-        ],
       ),
       child: Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
         Container(
@@ -63,9 +54,18 @@ class _ItemWidgetState extends State<ItemWidget> {
         Container(
           padding: const EdgeInsets.only(left: 12, top: 12),
           width: MediaQuery.of(context).size.width,
-          decoration: const BoxDecoration(
+          decoration: BoxDecoration(
             color: Colors.white,
-            borderRadius: BorderRadius.only(
+            boxShadow: [
+              BoxShadow(
+                color: Colors.grey.withOpacity(0.3),
+                spreadRadius: 5,
+                blurRadius: 10,
+
+                offset: const Offset(0, 2), // changes position of shadow
+              ),
+            ],
+            borderRadius: const BorderRadius.only(
                 bottomLeft: Radius.circular(10),
                 bottomRight: Radius.circular(10)),
           ),
