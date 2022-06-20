@@ -1,9 +1,9 @@
 class Cart {
-  int itemId;
   String cartId;
+  int itemId;
   int quantity;
 
-  Cart({required this.itemId, required this.cartId, required this.quantity});
+  Cart({required this.cartId, required this.itemId, required this.quantity});
 
   List<Object> get props => [
         itemId,

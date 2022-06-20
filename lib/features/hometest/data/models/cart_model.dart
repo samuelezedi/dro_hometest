@@ -1,22 +1,25 @@
 import 'package:dro_hometest/features/hometest/domain/entities/cart.dart';
 
 class CartModel {
-  final int itemId;
   final String cartId;
+  final int itemId;
   final int quantity;
 
   const CartModel(
-      {required this.itemId, required this.cartId, required this.quantity});
+      {required this.cartId, required this.itemId, required this.quantity});
 
   factory CartModel.fromJson(Map<String, dynamic> json) => CartModel(
-      itemId: json['item_id'],
       cartId: json['cart_id'],
+      itemId: json['item_id'],
       quantity: json['quantity']);
 
-  Map<String, dynamic> toJson() =>
-      {'quantity': quantity, 'cart_id': cartId, 'item_id': itemId};
+  Map<String, dynamic> toJson() => {
+        'cart_id': cartId,
+        'item_id': itemId,
+        'quantity': quantity,
+      };
 
-  Cart toEntity() => Cart(itemId: itemId, cartId: cartId, quantity: quantity);
+  Cart toEntity() => Cart(cartId: cartId, itemId: itemId, quantity: quantity);
 
   List<Object> get props => [
         itemId,
