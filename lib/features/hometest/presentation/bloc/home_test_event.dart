@@ -20,3 +20,9 @@ class DeleteCartItem extends HomeTestEvent {
   final Cart cart;
   const DeleteCartItem(this.cart);
 }
+
+class ChangeQuantity extends HomeTestEvent {
+  final String name;
+  final int qt;
+  const ChangeQuantity(this.name, this.qt);
+}

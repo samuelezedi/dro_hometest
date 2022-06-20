@@ -61,6 +61,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       floatingActionButton: GFloatingActionButton.small(
+        context: context,
         cartCount: getIt<CartCubit>().state == null
             ? 0
             : getIt<CartCubit>().state!.length,
@@ -84,7 +85,6 @@ class _PharmacyPageState extends State<PharmacyPage> {
       body: BlocListener<HomeTestBloc, HomeTestState>(
         listener: (context, state) {
           if (state is CartItemsLoaded) {
-            print('loaded');
             setState(() {});
           }
 
@@ -92,8 +92,16 @@ class _PharmacyPageState extends State<PharmacyPage> {
             setState(() {});
           }
 
-          if (state is CartItemsLoadFail) {
-            print('not loaded');
+          if (state is CartItemsLoadFail) {}
+
+          if (state is DeletedCartItem) {
+            //update UI
+            setState(() {});
+            // setVariables();
+          }
+
+          if (state is QuantityChanged) {
+            setState(() {});
           }
         },
         child: SingleChildScrollView(

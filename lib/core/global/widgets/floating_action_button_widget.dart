@@ -6,13 +6,17 @@ import 'package:flutter/material.dart';
 
 // ignore: must_be_immutable
 class GFloatingActionButton extends StatelessWidget {
-  GFloatingActionButton({required this.cartCount, Key? key}) : super(key: key) {
+  GFloatingActionButton(
+      {required this.cartCount, required this.context, Key? key})
+      : super(key: key) {
     small = false;
   }
   final int cartCount;
   late bool small;
+  BuildContext context;
 
-  GFloatingActionButton.small({required this.cartCount, Key? key})
+  GFloatingActionButton.small(
+      {required this.cartCount, required this.context, Key? key})
       : super(key: key) {
     small = true;
   }

@@ -45,6 +45,14 @@ class AddedCartItem extends HomeTestState {
   List<Object> get props => [cart];
 }
 
+class AddingFail extends HomeTestState {
+  final String message;
+  const AddingFail({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
 class DeletedCartItem extends HomeTestState {
   final List<String> cart;
   const DeletedCartItem({
@@ -53,4 +61,32 @@ class DeletedCartItem extends HomeTestState {
 
   @override
   List<Object> get props => [cart];
+}
+
+class DeleteFail extends HomeTestState {
+  final String message;
+  const DeleteFail({required this.message});
+
+  @override
+  List<Object> get props => [message];
+}
+
+class ChangingQuantity extends HomeTestState {}
+
+class QuantityChanged extends HomeTestState {
+  final List<String> cart;
+  const QuantityChanged({
+    required this.cart,
+  });
+
+  @override
+  List<Object> get props => [cart];
+}
+
+class QuantityChangedFail extends HomeTestState {
+  final String message;
+  const QuantityChangedFail({required this.message});
+
+  @override
+  List<Object> get props => [message];
 }

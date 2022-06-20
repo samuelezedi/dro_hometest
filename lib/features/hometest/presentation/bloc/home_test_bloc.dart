@@ -27,6 +27,10 @@ class HomeTestBloc extends Bloc<HomeTestEvent, HomeTestState> {
     if (event is DeleteCartItem) {
       yield* _mapRemoveCartItem(event);
     }
+
+    if (event is ChangeQuantity) {
+      yield* _mapChangeQuantity(event);
+    }
   }
 
   Stream<HomeTestState> _mapGetCartItems(
@@ -39,7 +43,7 @@ class HomeTestBloc extends Bloc<HomeTestEvent, HomeTestState> {
       final cartList = sp.getStringList('cart');
 
       print(cartList == null);
-      print('HERERE');
+      print('LOADING');
 
       if (cartList != null) {
         final li = <String>[];
@@ -96,7 +100,7 @@ class HomeTestBloc extends Bloc<HomeTestEvent, HomeTestState> {
         yield AddedCartItem(cart: [data]);
       }
     } catch (e) {
-      yield const CartItemsLoadFail(message: 'Failed to states list');
+      yield AddingFail(message: e.toString());
     }
   }
 
@@ -120,7 +124,29 @@ class HomeTestBloc extends Bloc<HomeTestEvent, HomeTestState> {
       }
       yield DeletedCartItem(cart: [data]);
     } catch (e) {
-      yield const CartItemsLoadFail(message: 'Failed to states list');
+      yield DeleteFail(message: e.toString());
+    }
+  }
+
+  Stream<HomeTestState> _mapChangeQuantity(
+    ChangeQuantity event,
+  ) async* {
+    try {
+      yield ChangingQuantity();
+
+      final sp = await SharedPreferences.getInstance();
+      final cartList = sp.getStringList('cart');
+
+      if (cartList != null) {
+        if (cartList.contains(event.name)) {
+          var value = sp.getInt(event.name);
+          var result = (value as int) + event.qt;
+          sp.setInt(event.name, result);
+        }
+      }
+      yield QuantityChanged(cart: cartList as List<String>);
+    } catch (e) {
+      yield QuantityChangedFail(message: e.toString());
     }
   }
 

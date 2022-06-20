@@ -4,7 +4,8 @@ import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
 
 class GButtons {
-  static Widget purpleGradient(String text, Function() onTap) {
+  static Widget purpleGradient(String text, Function() onTap,
+      {showIcon = true}) {
     return InkWell(
       onTap: () {
         onTap();
@@ -12,11 +13,12 @@ class GButtons {
       child: Center(
         child: Container(
             child: Row(mainAxisAlignment: MainAxisAlignment.center, children: [
-              const Icon(
-                HomeTestIcon.cart,
-                color: Colors.white,
-              ),
-              6.horizontalGap,
+              if (showIcon)
+                const Icon(
+                  HomeTestIcon.cart,
+                  color: Colors.white,
+                ),
+              if (showIcon) 6.horizontalGap,
               Text(
                 text,
                 style: const TextStyle(
