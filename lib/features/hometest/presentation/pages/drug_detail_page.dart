@@ -50,6 +50,18 @@ class _DrugDetailPageState extends State<DrugDetailPage> {
                 GlobalHeader(
                   headerTitle: 'Pharmacy',
                   searchController: TextEditingController(),
+                  icon: IconButton(
+                      onPressed: () {
+                        Navigator.push(
+                            context,
+                            MaterialPageRoute(
+                                builder: (context) => const CartPage()));
+                      },
+                      icon: const Icon(
+                        HomeTestIcon.cart,
+                        size: 20,
+                        color: Colors.white,
+                      )),
                 ),
                 20.verticalGap,
                 Image.asset(
@@ -119,7 +131,15 @@ class _DrugDetailPageState extends State<DrugDetailPage> {
                             mainAxisAlignment: MainAxisAlignment.spaceBetween,
                             children: [
                               InkWell(
-                                  onTap: () {}, child: GWidgets.blackText('-')),
+                                  onTap: () {
+                                    if (quantity > 1) {
+                                      setState(() {
+                                        quantity -= 1;
+                                        showPrice = price * quantity;
+                                      });
+                                    }
+                                  },
+                                  child: GWidgets.blackText('-')),
                               25.horizontalGap,
                               GWidgets.blackText(quantity.toString()),
                               25.horizontalGap,
@@ -295,8 +315,10 @@ class _DrugDetailPageState extends State<DrugDetailPage> {
                   Navigator.pop(context);
                 }, viewCart: () {
                   Navigator.pop(context);
-                  Navigator.push(context,
-                      MaterialPageRoute(builder: (context) => CartPage()));
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CartPage()));
                 });
               }))
         ],

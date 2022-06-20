@@ -1,5 +1,6 @@
 import 'package:dro_hometest/core/global/extensions/number_extensions.dart';
 import 'package:dro_hometest/core/global/widgets/global_widgets.dart';
+import 'package:dro_hometest/features/hometest/presentation/pages/cart_page.dart';
 import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
 
@@ -22,7 +23,12 @@ class GFloatingActionButton extends StatelessWidget {
         ? Stack(
             children: [
               FloatingActionButton.small(
-                  onPressed: () {},
+                  onPressed: () {
+                    Navigator.push(
+                        context,
+                        MaterialPageRoute(
+                            builder: (context) => const CartPage()));
+                  },
                   child: Container(
                     padding: const EdgeInsets.only(right: 5),
                     decoration: BoxDecoration(

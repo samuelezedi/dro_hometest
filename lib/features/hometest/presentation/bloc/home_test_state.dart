@@ -33,6 +33,8 @@ class CartItemsLoadFail extends HomeTestState {
 
 class AddingCartItem extends HomeTestState {}
 
+class DeletingCartItem extends HomeTestState {}
+
 class AddedCartItem extends HomeTestState {
   final List<String> cart;
   const AddedCartItem({

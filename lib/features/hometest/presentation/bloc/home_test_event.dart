@@ -17,5 +17,6 @@ class AddCartItem extends HomeTestEvent {
 }
 
 class DeleteCartItem extends HomeTestEvent {
-  const DeleteCartItem();
+  final Cart cart;
+  const DeleteCartItem(this.cart);
 }

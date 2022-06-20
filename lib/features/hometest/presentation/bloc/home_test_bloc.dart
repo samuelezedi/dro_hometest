@@ -23,6 +23,10 @@ class HomeTestBloc extends Bloc<HomeTestEvent, HomeTestState> {
     if (event is AddCartItem) {
       yield* _mapAddCartItem(event);
     }
+
+    if (event is DeleteCartItem) {
+      yield* _mapRemoveCartItem(event);
+    }
   }
 
   Stream<HomeTestState> _mapGetCartItems(
@@ -91,9 +95,30 @@ class HomeTestBloc extends Bloc<HomeTestEvent, HomeTestState> {
         sp.setInt(data, event.cart.quantity);
         yield AddedCartItem(cart: [data]);
       }
+    } catch (e) {
+      yield const CartItemsLoadFail(message: 'Failed to states list');
+    }
+  }
 
-      // } on SocketException catch (e) {
-      //   if (e.osError?.errorCode == 61) getIt<LoginBloc>().add(const LogOut());
+  Stream<HomeTestState> _mapRemoveCartItem(
+    DeleteCartItem event,
+  ) async* {
+    try {
+      yield DeletingCartItem();
+
+      final sp = await SharedPreferences.getInstance();
+      final cartList = sp.getStringList('cart');
+
+      final data = "${event.cart.cartId}-${event.cart.itemId}";
+
+      if (cartList != null) {
+        if (cartList.contains(data)) {
+          sp.remove(data);
+          deleteCubit(event.cart);
+          cartList.removeWhere((element) => data == element);
+        }
+      }
+      yield DeletedCartItem(cart: [data]);
     } catch (e) {
       yield const CartItemsLoadFail(message: 'Failed to states list');
     }
@@ -103,20 +128,25 @@ class HomeTestBloc extends Bloc<HomeTestEvent, HomeTestState> {
     String ca = "${event.cartId}-${event.itemId}";
 
     final data = getIt<CartCubit>().state;
-    print('checking');
-    print(data.toString());
-    if (data != null) {
-      // final d = data.firstWhere((element) => element.cartId == ca.cartId);
-      // d.quantity = ca.quantity;
-      // print(data.toString());
-      // getIt<CartCubit>().setData(data);
 
-      // //new
+    if (data != null) {
       data.add(ca);
       data.toSet().toList();
       getIt<CartCubit>().setData(data);
     } else {
       getIt<CartCubit>().setData([ca]);
+    }
+  }
+
+  void deleteCubit(Cart event) {
+    String ca = "${event.cartId}-${event.itemId}";
+
+    final data = getIt<CartCubit>().state;
+
+    if (data != null) {
+      data.removeWhere((element) => element == ca);
+      data.toSet().toList();
+      getIt<CartCubit>().setData(data);
     }
   }
 }
