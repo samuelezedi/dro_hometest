@@ -3,18 +3,24 @@ import 'package:dartz/dartz.dart';
 import 'package:dro_hometest/features/hometest/domain/entities/cart.dart';
 import 'package:dro_hometest/features/hometest/presentation/bloc/home_test_bloc.dart';
 import 'package:flutter_test/flutter_test.dart';
+import 'package:mockito/annotations.dart';
 import 'package:mockito/mockito.dart';
 
+import 'home_test_bloc_test.mocks.dart';
+
+@GenerateMocks([HomeTestBloc])
 void main() {
   late HomeTestBloc homeTestBloc;
+  late MockHomeTestBloc mockHomeTestBloc;
 
   setUp(() {
     homeTestBloc = HomeTestBloc();
+    mockHomeTestBloc = MockHomeTestBloc();
   });
 
   final tCart = Cart(cartId: '1', itemId: 1, quantity: 2);
 
-  const cart = '1';
+  var cart = <String>[];
 
   group('bloc test', () {
     test('initial state should be empty', () {
@@ -22,37 +28,37 @@ void main() {
     });
 
     blocTest<HomeTestBloc, HomeTestState>(
-        'should emit [loading, has data] when data is gotten successfully',
+        'should yield [loading, loaded] when data is gotten successfully',
         build: () {
-          when(homeTestBloc.getCartMix())
-              .thenAnswer((_) async => const Right(tWeather));
+          when(mockHomeTestBloc.getCartMix())
+              .thenAnswer((_) async => Right(cart));
           return homeTestBloc;
         },
-        act: (bloc) => bloc.add(const OnCityChanged(tCityName)),
+        act: (bloc) => bloc.add(const GetCartItems()),
         wait: const Duration(milliseconds: 100),
         expect: () => [
-              WeatherLoading(),
-              const WeatherHasData(tWeather),
+              CartLoading(),
+              CartItemsLoaded(cart: cart),
             ],
         verify: (bloc) {
-          verify(mockGetCurrentWeather.execute(tCityName));
+          verify(mockHomeTestBloc.getCartMix());
         });
 
-    blocTest<WeatherBloc, WeatherState>(
-        'should emit [loading, error] when data is gotten unsuccessfully',
+    blocTest<HomeTestBloc, HomeTestState>(
+        'should emit [loading, empty] when data is gotten unsuccessfully',
         build: () {
-          when(mockGetCurrentWeather.execute(tCityName)).thenAnswer(
-              (_) async => const Left(ServerFailure('Server failure')));
-          return weatherBloc;
+          when(mockHomeTestBloc.getCartMix())
+              .thenAnswer((_) async => const Left([]));
+          return homeTestBloc;
         },
-        act: (bloc) => bloc.add(const OnCityChanged(tCityName)),
+        act: (bloc) => bloc.add(const GetCartItems()),
         wait: const Duration(milliseconds: 100),
         expect: () => [
-              WeatherLoading(),
-              const WeatherError('Server failure'),
+              CartLoading(),
+              const CartItemsLoadFail(message: 'message'),
             ],
         verify: (bloc) {
-          verify(mockGetCurrentWeather.execute(tCityName));
+          verify(mockHomeTestBloc.getCartMix());
         });
   });
 }
