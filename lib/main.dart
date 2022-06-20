@@ -1,6 +1,7 @@
 import 'package:dro_hometest/app.dart';
 import 'package:dro_hometest/core/global/screen_utils/screen_util_setup.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 import 'di/injectable.dart';
 
@@ -9,6 +10,9 @@ void main() async {
 
   // print('Starting app from main.dart');
   await configureDependencies('home_test');
+
+  // final sp = await SharedPreferences.getInstance();
+  // sp.clear();
 
   runApp(const MyApp());
 }

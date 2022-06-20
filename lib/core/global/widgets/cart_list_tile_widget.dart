@@ -1,4 +1,6 @@
+import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:dro_hometest/core/global/extensions/number_extensions.dart';
+import 'package:dro_hometest/core/global/widgets/custom_dropdown_widget.dart';
 import 'package:dro_hometest/core/global/widgets/global_widgets.dart';
 import 'package:dro_hometest/home_test_icon_icons.dart';
 import 'package:flutter/material.dart';
@@ -19,7 +21,7 @@ class CartListTileWidget extends StatelessWidget {
   final String desc;
   final Widget price;
   final Widget quantity;
-  final Function() changeQuantity;
+  final Function(int value) changeQuantity;
   final Function() removeItem;
 
   @override
@@ -60,18 +62,30 @@ class CartListTileWidget extends StatelessWidget {
               child: Row(
                   mainAxisAlignment: MainAxisAlignment.spaceBetween,
                   children: [
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 5),
-                      child: quantity,
-                    ),
-                    const Padding(
-                      padding: EdgeInsets.only(left: 5, right: 0),
-                      child: Icon(
-                        Icons.keyboard_arrow_down_outlined,
-                        color: Color(0xFF9F5DE2),
-                        size: 20,
-                      ),
-                    )
+                    // Padding(
+                    //   padding: const EdgeInsets.symmetric(horizontal: 5),
+                    //   child: quantity,
+                    // ),
+                    Builder(builder: (context) {
+                      CustomPopupMenuController controller =
+                          CustomPopupMenuController();
+                      return CustomDropdownWidget(
+                          onChange: (value) {
+                            controller.hideMenu();
+                            print(value);
+                            changeQuantity(int.parse(value));
+                          },
+                          selected: Padding(
+                            padding: const EdgeInsets.only(right: 12.0),
+                            child: quantity,
+                          ),
+                          icon: const Icon(
+                            Icons.keyboard_arrow_down_outlined,
+                            color: Color(0xFF9F5DE2),
+                            size: 20,
+                          ),
+                          controller: controller);
+                    }),
                   ]),
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),
               decoration: BoxDecoration(

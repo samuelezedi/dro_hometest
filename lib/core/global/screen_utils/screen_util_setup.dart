@@ -7,7 +7,7 @@ class ScreenUtilSetup extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     return MediaQuery(
-      data: MediaQueryData.fromWindow(WidgetsBinding.instance!.window),
+      data: MediaQueryData.fromWindow(WidgetsBinding.instance.window),
       child: Builder(
         builder: (context) {
           ScreenUtil.init(

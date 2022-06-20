@@ -56,6 +56,12 @@ class _CartPageState extends State<CartPage> {
     return double.parse(Constants.itemList[index]['price']);
   }
 
+  void updateQuantity(int value, String key) async {
+    final sp = await SharedPreferences.getInstance();
+    sp.setInt(key, value);
+    setVariables();
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
@@ -88,46 +94,63 @@ class _CartPageState extends State<CartPage> {
             ),
           ),
           30.verticalGap,
-          Expanded(
-            // height: 500,
-            child: ListView.builder(
-                itemCount: getIt<CartCubit>().state == null
-                    ? 0
-                    : getIt<CartCubit>().state!.length,
-                itemBuilder: (context, index) {
-                  final data = getIt<CartCubit>().state![index];
-                  int itemId = int.parse(data.split("-")[1]);
-                  String cartId = data.split("-")[0];
-                  final drug = DrugModel(
-                          name: Constants.itemList[itemId]['name'],
-                          desc: Constants.itemList[itemId]['desc'],
-                          soldBy: Constants.itemList[itemId]['sold_by'],
-                          soldByImage: Constants.itemList[itemId]
-                              ['sold_by_image'],
-                          price: Constants.itemList[itemId]['price'],
-                          packSize: Constants.itemList[itemId]['pack_size'],
-                          productId: Constants.itemList[itemId]['product_id'],
-                          constituents: Constants.itemList[itemId]['const'],
-                          dispensedIn: Constants.itemList[itemId]
-                              ['dispensed_in'],
-                          longDesc: Constants.itemList[itemId]['long_desc'],
-                          image: Constants.itemList[itemId]['image'],
-                          requiresPres: Constants.itemList[itemId]
-                              ['requires_pres'])
-                      .toEntity();
-                  return CartListTileWidget(
-                      image: drug.image,
-                      desc: drug.desc,
-                      title: drug.name,
-                      changeQuantity: () {},
-                      removeItem: () {
-                        getIt<HomeTestBloc>().add(DeleteCartItem(
-                            Cart(itemId: itemId, cartId: cartId, quantity: 0)));
-                      },
-                      price: getPrice(data, drug.price),
-                      quantity: getQuantity(data));
-                }),
-          ),
+          if (getIt<CartCubit>().state == null)
+            Expanded(
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.center,
+                children: [
+                  Image.asset('assets/images/404.png'),
+                  20.verticalGap,
+                  const Text(
+                    'No item in cart yet',
+                    style: TextStyle(fontSize: 20),
+                  )
+                ],
+              ),
+            ),
+          if (getIt<CartCubit>().state != null)
+            Expanded(
+              // height: 500,
+              child: ListView.builder(
+                  itemCount: getIt<CartCubit>().state == null
+                      ? 0
+                      : getIt<CartCubit>().state!.length,
+                  itemBuilder: (context, index) {
+                    final data = getIt<CartCubit>().state![index];
+                    int itemId = int.parse(data.split("-")[1]);
+                    String cartId = data.split("-")[0];
+                    final drug = DrugModel(
+                            name: Constants.itemList[itemId]['name'],
+                            desc: Constants.itemList[itemId]['desc'],
+                            soldBy: Constants.itemList[itemId]['sold_by'],
+                            soldByImage: Constants.itemList[itemId]
+                                ['sold_by_image'],
+                            price: Constants.itemList[itemId]['price'],
+                            packSize: Constants.itemList[itemId]['pack_size'],
+                            productId: Constants.itemList[itemId]['product_id'],
+                            constituents: Constants.itemList[itemId]['const'],
+                            dispensedIn: Constants.itemList[itemId]
+                                ['dispensed_in'],
+                            longDesc: Constants.itemList[itemId]['long_desc'],
+                            image: Constants.itemList[itemId]['image'],
+                            requiresPres: Constants.itemList[itemId]
+                                ['requires_pres'])
+                        .toEntity();
+                    return CartListTileWidget(
+                        image: drug.image,
+                        desc: drug.desc,
+                        title: drug.name,
+                        changeQuantity: (value) {
+                          updateQuantity(value, cartId);
+                        },
+                        removeItem: () {
+                          getIt<HomeTestBloc>().add(DeleteCartItem(Cart(
+                              itemId: itemId, cartId: cartId, quantity: 0)));
+                        },
+                        price: getPrice(data, drug.price),
+                        quantity: getQuantity(data));
+                  }),
+            ),
           // Expanded(child: Container()),
           Padding(
             padding: const EdgeInsets.symmetric(horizontal: 25, vertical: 20),
