@@ -1,5 +1,5 @@
+import 'package:dartz/dartz.dart';
 import 'package:dro_hometest/di/injectable.dart';
-import 'package:dro_hometest/features/hometest/data/models/cart_model.dart';
 import 'package:dro_hometest/features/hometest/domain/entities/cart.dart';
 import 'package:dro_hometest/features/hometest/presentation/cubit/cart_cubit.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
@@ -39,24 +39,35 @@ class HomeTestBloc extends Bloc<HomeTestEvent, HomeTestState> {
     try {
       yield CartLoading();
 
-      final sp = await SharedPreferences.getInstance();
-      final cartList = sp.getStringList('cart');
+      final cartList = await getCartMix();
 
-      if (cartList != null) {
-        final li = <String>[];
-        cartList.map((e) {
-          li.add(e);
-        }).toList();
-        getIt<CartCubit>().setData(li);
-        yield CartItemsLoaded(cart: cartList);
-      }
-
-      // } on SocketException catch (e) {
-      //   if (e.osError?.errorCode == 61) getIt<LoginBloc>().add(const LogOut());
+      cartList.fold(
+        (failure) async* {
+          yield CartItemsLoadFail(message: failure.first);
+        },
+        (data) async* {
+          yield CartItemsLoaded(cart: data);
+        },
+      );
     } catch (e) {
       print(e.toString());
       yield CartItemsLoadFail(message: e.toString());
     }
+  }
+
+  Future<Either<List<String>, List<String>>> getCartMix() async {
+    final sp = await SharedPreferences.getInstance();
+    final cartList = sp.getStringList('cart');
+
+    if (cartList != null) {
+      final li = <String>[];
+      cartList.map((e) {
+        li.add(e);
+      }).toList();
+      getIt<CartCubit>().setData(li);
+      return Right(cartList);
+    }
+    return const Left(<String>[]);
   }
 
   Stream<HomeTestState> _mapAddCartItem(
