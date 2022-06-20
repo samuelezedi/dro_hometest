@@ -12,7 +12,7 @@ final getIt = GetIt.instance;
 )
 Future<void> configureDependencies(String environment) async {
   // ignore: avoid_print
-  print('Using environment: $environment');
+  // print('Using environment: $environment');
   $initGetIt(getIt, environment: environment);
   await getIt.allReady();
 }

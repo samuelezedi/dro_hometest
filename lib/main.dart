@@ -1,9 +1,19 @@
 import 'package:dro_hometest/app.dart';
 import 'package:dro_hometest/core/global/screen_utils/screen_util_setup.dart';
 import 'package:flutter/material.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
-void main() {
+import 'di/injectable.dart';
+
+void main() async {
   WidgetsFlutterBinding.ensureInitialized();
+
+  // print('Starting app from main.dart');
+  await configureDependencies('home_test');
+
+  final sp = await SharedPreferences.getInstance();
+  final cartList = sp.clear();
+
   runApp(const MyApp());
 }
 

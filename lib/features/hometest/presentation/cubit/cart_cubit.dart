@@ -1,11 +1,9 @@
-import 'package:dro_hometest/features/hometest/data/models/cart_model.dart';
-import 'package:dro_hometest/features/hometest/domain/entities/cart.dart';
 import 'package:flutter_bloc/flutter_bloc.dart';
 
-class CartCubit extends Cubit<List<Cart>?> {
+class CartCubit extends Cubit<List<String>?> {
   CartCubit() : super(null);
 
-  void setData(List<Cart> cart) {
+  void setData(List<String> cart) {
     emit(cart);
   }
 }

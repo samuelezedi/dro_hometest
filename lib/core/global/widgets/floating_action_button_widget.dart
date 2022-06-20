@@ -46,14 +46,18 @@ class GFloatingActionButton extends StatelessWidget {
                   child: Center(
                     child: Text(
                       cartCount.toString(),
-                      style: const TextStyle(
+                      style: TextStyle(
                           fontSize: 12,
-                          color: Colors.black,
+                          color: cartCount == 0
+                              ? Colors.transparent
+                              : Colors.black,
                           fontWeight: FontWeight.bold),
                     ),
                   ),
                   decoration: BoxDecoration(
-                      color: const Color(0xFFF2C94C),
+                      color: cartCount == 0
+                          ? Colors.transparent
+                          : const Color(0xFFF2C94C),
                       borderRadius: BorderRadius.circular(18)),
                 ),
               )

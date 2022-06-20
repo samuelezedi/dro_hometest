@@ -25,7 +25,18 @@ class DrugDetailPage extends StatefulWidget {
 }
 
 class _DrugDetailPageState extends State<DrugDetailPage> {
-  final int quantity = 0;
+  int quantity = 1;
+  double price = 0;
+  double showPrice = 0;
+
+  @override
+  void initState() {
+    super.initState();
+    print(widget.index);
+    print(widget.drug);
+    price = double.parse(widget.drug.price.toString());
+    showPrice = double.parse(widget.drug.price.toString());
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -91,6 +102,7 @@ class _DrugDetailPageState extends State<DrugDetailPage> {
                     )),
                   ),
                 ),
+                10.verticalGap,
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 35),
                   child: Row(
@@ -109,10 +121,16 @@ class _DrugDetailPageState extends State<DrugDetailPage> {
                               InkWell(
                                   onTap: () {}, child: GWidgets.blackText('-')),
                               25.horizontalGap,
-                              GWidgets.blackText('1'),
+                              GWidgets.blackText(quantity.toString()),
                               25.horizontalGap,
                               InkWell(
-                                  onTap: () {}, child: GWidgets.blackText('+')),
+                                  onTap: () {
+                                    setState(() {
+                                      quantity += 1;
+                                      showPrice = price * quantity;
+                                    });
+                                  },
+                                  child: GWidgets.blackText('+')),
                             ]),
                       ),
                       10.horizontalGap,
@@ -124,7 +142,8 @@ class _DrugDetailPageState extends State<DrugDetailPage> {
                           padding: const EdgeInsets.only(bottom: 10),
                           child: GWidgets.blackText('₦',
                               fontWeight: FontWeight.normal, fontSize: 17)),
-                      GWidgets.blackText('600', fontSize: 30),
+                      GWidgets.blackText(showPrice.toInt().toString(),
+                          fontSize: 30),
                       Padding(
                           padding: const EdgeInsets.only(top: 6),
                           child: GWidgets.blackText('.00',
@@ -269,6 +288,7 @@ class _DrugDetailPageState extends State<DrugDetailPage> {
                         quantity: quantity)
                     .toEntity();
                 getIt<HomeTestBloc>().add(AddCartItem(cart));
+
                 GWidgets.showBottomSheet(context,
                     '${widget.drug.name} has been successfully added to cart!',
                     continueShopping: () {

@@ -60,27 +60,10 @@ class _PharmacyPageState extends State<PharmacyPage> {
   @override
   Widget build(BuildContext context) {
     return Scaffold(
-      floatingActionButton: BlocListener<HomeTestBloc, HomeTestState>(
-        bloc: getIt<HomeTestBloc>(),
-        listener: (context, state) {
-          if (state is CartItemsLoaded) {
-            final cart = <Cart>[];
-            for (var element in state.cart) {
-              final string = element.split("-");
-              cart.add(CartModel.fromJson({
-                'cart_id': string[0],
-                'item_id': string[1],
-                'qunatity': string[2]
-              }).toEntity());
-            }
-            getIt<CartCubit>().setData(cart);
-          }
-
-          if (state is CartItemsLoadFail) {}
-        },
-        child: GFloatingActionButton.small(
-          cartCount: getIt<CartCubit>().state!.length,
-        ),
+      floatingActionButton: GFloatingActionButton.small(
+        cartCount: getIt<CartCubit>().state == null
+            ? 0
+            : getIt<CartCubit>().state!.length,
       ),
       bottomNavigationBar: GBottomNavigation(
         currentIndex: 2,
@@ -98,137 +81,154 @@ class _PharmacyPageState extends State<PharmacyPage> {
           },
         ),
       ),
-      body: SingleChildScrollView(
-        child: Column(children: [
-          Container(
-            width: MediaQuery.of(context).size.width,
-            color: const Color(0xFFF2F2F2),
-            padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
-            child: Column(
-              mainAxisAlignment: MainAxisAlignment.end,
-              children: [
-                Row(
-                  children: const [
-                    Icon(
-                      HomeTestIcon.location_pin,
-                      size: 15,
-                    ),
-                    Text.rich(
-                      TextSpan(
-                        children: [
-                          TextSpan(text: ' Delivery in '),
-                          TextSpan(
-                            text: 'Lagos, NG',
-                            style: TextStyle(fontWeight: FontWeight.bold),
-                          ),
-                        ],
+      body: BlocListener<HomeTestBloc, HomeTestState>(
+        listener: (context, state) {
+          if (state is CartItemsLoaded) {
+            print('loaded');
+            setState(() {});
+          }
+
+          if (state is AddedCartItem) {
+            setState(() {});
+          }
+
+          if (state is CartItemsLoadFail) {
+            print('not loaded');
+          }
+        },
+        child: SingleChildScrollView(
+          child: Column(children: [
+            Container(
+              width: MediaQuery.of(context).size.width,
+              color: const Color(0xFFF2F2F2),
+              padding: const EdgeInsets.symmetric(horizontal: 24, vertical: 15),
+              child: Column(
+                mainAxisAlignment: MainAxisAlignment.end,
+                children: [
+                  Row(
+                    children: const [
+                      Icon(
+                        HomeTestIcon.location_pin,
+                        size: 15,
                       ),
-                    )
-                  ],
-                ),
-              ],
+                      Text.rich(
+                        TextSpan(
+                          children: [
+                            TextSpan(text: ' Delivery in '),
+                            TextSpan(
+                              text: 'Lagos, NG',
+                              style: TextStyle(fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
+                      )
+                    ],
+                  ),
+                ],
+              ),
             ),
-          ),
-          showSearching
-              ? SearchResult(
-                  list: tempSearchStore,
-                  searchNotFound: showSearchNotFound,
-                  searchText: searchText.text.toString(),
-                )
-              : Container(
-                  color: Colors.white,
-                  child: Column(children: [
-                    10.verticalGap,
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Row(
-                        mainAxisAlignment: MainAxisAlignment.spaceBetween,
-                        children: [
-                          GWidgets.greyText('CATEGORY',
-                              fontWeight: FontWeight.bold, opacity: 0.4),
-                          InkWell(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) =>
-                                          const CategoryPage()));
-                            },
-                            child: GWidgets.purpleText('VIEW ALL',
-                                fontWeight: FontWeight.bold),
-                          ),
-                        ],
+            showSearching
+                ? SearchResult(
+                    list: tempSearchStore,
+                    searchNotFound: showSearchNotFound,
+                    searchText: searchText.text.toString(),
+                  )
+                : Container(
+                    color: Colors.white,
+                    child: Column(children: [
+                      10.verticalGap,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Row(
+                          mainAxisAlignment: MainAxisAlignment.spaceBetween,
+                          children: [
+                            GWidgets.greyText('CATEGORY',
+                                fontWeight: FontWeight.bold, opacity: 0.4),
+                            InkWell(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) =>
+                                            const CategoryPage()));
+                              },
+                              child: GWidgets.purpleText('VIEW ALL',
+                                  fontWeight: FontWeight.bold),
+                            ),
+                          ],
+                        ),
                       ),
-                    ),
-                    10.verticalGap,
-                    SizedBox(
-                      height: 98,
-                      child: ListView.builder(
-                          scrollDirection: Axis.horizontal,
-                          physics: const BouncingScrollPhysics(),
-                          itemCount: Constants.categoryList.length,
-                          itemBuilder: (context, index) {
-                            return Padding(
-                              padding: const EdgeInsets.only(left: 24),
-                              child: CategoryWidget(
-                                imageUrl: Constants.categoryList[index]['image']
-                                    .toString(),
-                                title: Constants.categoryList[index]['name']
-                                    .toString(),
-                              ),
+                      10.verticalGap,
+                      SizedBox(
+                        height: 98,
+                        child: ListView.builder(
+                            scrollDirection: Axis.horizontal,
+                            physics: const BouncingScrollPhysics(),
+                            itemCount: Constants.categoryList.length,
+                            itemBuilder: (context, index) {
+                              return Padding(
+                                padding: const EdgeInsets.only(left: 24),
+                                child: CategoryWidget(
+                                  imageUrl: Constants.categoryList[index]
+                                          ['image']
+                                      .toString(),
+                                  title: Constants.categoryList[index]['name']
+                                      .toString(),
+                                ),
+                              );
+                            }),
+                      ),
+                      20.verticalGap,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: Row(
+                          children: [
+                            GWidgets.greyText('SUGGESTIONS',
+                                fontWeight: FontWeight.bold, opacity: 0.4),
+                          ],
+                        ),
+                      ),
+                      10.verticalGap,
+                      Padding(
+                        padding: const EdgeInsets.symmetric(horizontal: 24),
+                        child: GridView.builder(
+                          padding: EdgeInsets.zero,
+                          shrinkWrap: true,
+                          physics: const NeverScrollableScrollPhysics(),
+                          gridDelegate:
+                              const SliverGridDelegateWithFixedCrossAxisCount(
+                                  crossAxisCount: 2,
+                                  mainAxisExtent: 250,
+                                  crossAxisSpacing: 30),
+                          itemBuilder: (_, index) {
+                            final Drug drug =
+                                DrugModel.fromJson(Constants.itemList[index])
+                                    .toEntity();
+                            return ItemWidget(
+                              onTap: () {
+                                Navigator.push(
+                                    context,
+                                    MaterialPageRoute(
+                                        builder: (context) => DrugDetailPage(
+                                              drug: drug,
+                                              index: index,
+                                            )));
+                              },
+                              imageUrl: drug.image.toString(),
+                              title: drug.name.toString(),
+                              desc: drug.desc.toString(),
+                              priceTag: drug.price.toString(),
+                              requiredPres: drug.requiresPres,
                             );
-                          }),
-                    ),
-                    20.verticalGap,
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: Row(
-                        children: [
-                          GWidgets.greyText('SUGGESTIONS',
-                              fontWeight: FontWeight.bold, opacity: 0.4),
-                        ],
+                          },
+                          itemCount: Constants.itemList.length,
+                          // padding: const EdgeInsets.all(20),
+                        ),
                       ),
-                    ),
-                    10.verticalGap,
-                    Padding(
-                      padding: const EdgeInsets.symmetric(horizontal: 24),
-                      child: GridView.builder(
-                        padding: EdgeInsets.zero,
-                        shrinkWrap: true,
-                        physics: const NeverScrollableScrollPhysics(),
-                        gridDelegate:
-                            const SliverGridDelegateWithFixedCrossAxisCount(
-                                crossAxisCount: 2,
-                                mainAxisExtent: 250,
-                                crossAxisSpacing: 30),
-                        itemBuilder: (_, index) {
-                          final Drug drug =
-                              DrugModel.fromJson(Constants.itemList[index])
-                                  .toEntity();
-                          return ItemWidget(
-                            onTap: () {
-                              Navigator.push(
-                                  context,
-                                  MaterialPageRoute(
-                                      builder: (context) => DrugDetailPage(
-                                            drug: drug,
-                                            index: index,
-                                          )));
-                            },
-                            imageUrl: drug.image.toString(),
-                            title: drug.name.toString(),
-                            desc: drug.desc.toString(),
-                            priceTag: drug.price.toString(),
-                            requiredPres: drug.requiresPres,
-                          );
-                        },
-                        itemCount: Constants.itemList.length,
-                        // padding: const EdgeInsets.all(20),
-                      ),
-                    ),
-                  ]),
-                )
-        ]),
+                    ]),
+                  )
+          ]),
+        ),
       ),
     );
   }

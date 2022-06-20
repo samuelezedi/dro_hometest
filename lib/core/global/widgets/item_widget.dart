@@ -100,7 +100,7 @@ class _ItemWidgetState extends State<ItemWidget> {
                   : Row(
                       mainAxisAlignment: MainAxisAlignment.spaceBetween,
                       children: [
-                        GWidgets.greyText(widget.priceTag,
+                        GWidgets.greyText('₦' + widget.priceTag,
                             fontSize: 18, fontWeight: FontWeight.bold),
                         Container(
                           height: 32,
