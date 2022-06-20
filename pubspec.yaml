@@ -42,7 +42,6 @@ dependencies:
   intl: ^0.17.0
   timeago: ^3.0.2
   shared_preferences: ^2.0.15
-  custom_pop_up_menu:
 
 dev_dependencies:
   flutter_test:

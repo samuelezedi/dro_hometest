@@ -42,9 +42,6 @@ class HomeTestBloc extends Bloc<HomeTestEvent, HomeTestState> {
       final sp = await SharedPreferences.getInstance();
       final cartList = sp.getStringList('cart');
 
-      print(cartList == null);
-      print('LOADING');
-
       if (cartList != null) {
         final li = <String>[];
         cartList.map((e) {
@@ -58,7 +55,7 @@ class HomeTestBloc extends Bloc<HomeTestEvent, HomeTestState> {
       //   if (e.osError?.errorCode == 61) getIt<LoginBloc>().add(const LogOut());
     } catch (e) {
       print(e.toString());
-      yield const CartItemsLoadFail(message: 'Failed to states list');
+      yield CartItemsLoadFail(message: e.toString());
     }
   }
 
@@ -72,8 +69,6 @@ class HomeTestBloc extends Bloc<HomeTestEvent, HomeTestState> {
       final cartList = sp.getStringList('cart');
 
       final data = "${event.cart.cartId}-${event.cart.itemId}";
-
-      print(cartList);
 
       if (cartList != null) {
         if (cartList.contains(data)) {
@@ -139,9 +134,7 @@ class HomeTestBloc extends Bloc<HomeTestEvent, HomeTestState> {
 
       if (cartList != null) {
         if (cartList.contains(event.name)) {
-          var value = sp.getInt(event.name);
-          var result = (value as int) + event.qt;
-          sp.setInt(event.name, result);
+          sp.setInt(event.name, event.qt);
         }
       }
       yield QuantityChanged(cart: cartList as List<String>);

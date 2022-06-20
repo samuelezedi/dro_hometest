@@ -11,8 +11,8 @@ void main() async {
   // print('Starting app from main.dart');
   await configureDependencies('home_test');
 
-  // final sp = await SharedPreferences.getInstance();
-  // sp.clear();
+  final sp = await SharedPreferences.getInstance();
+  sp.clear();
 
   runApp(const MyApp());
 }

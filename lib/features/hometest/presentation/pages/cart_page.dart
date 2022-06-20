@@ -40,6 +40,7 @@ class _CartPageState extends State<CartPage> {
 
     cc!.map((e) {
       var qt = sp.getInt(e);
+
       if (qt != null) {
         var itemId = int.parse(e.split("-")[1]);
         var price = getPriceVal(itemId);
@@ -56,10 +57,11 @@ class _CartPageState extends State<CartPage> {
     return double.parse(Constants.itemList[index]['price']);
   }
 
-  void updateQuantity(int value, String key) async {
+  void updateQuantity(int value, String key, int item) async {
     final sp = await SharedPreferences.getInstance();
     sp.setInt(key, value);
-    setVariables();
+    getIt<HomeTestBloc>()
+        .add(ChangeQuantity(key + '-' + item.toString(), value));
   }
 
   @override
@@ -141,7 +143,7 @@ class _CartPageState extends State<CartPage> {
                         desc: drug.desc,
                         title: drug.name,
                         changeQuantity: (value) {
-                          updateQuantity(value, cartId);
+                          updateQuantity(value, cartId, itemId);
                         },
                         removeItem: () {
                           getIt<HomeTestBloc>().add(DeleteCartItem(Cart(

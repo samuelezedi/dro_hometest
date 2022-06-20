@@ -59,13 +59,17 @@ class _PharmacyPageState extends State<PharmacyPage> {
 
   @override
   Widget build(BuildContext context) {
+    final cartCount = getIt<CartCubit>().state;
     return Scaffold(
-      floatingActionButton: GFloatingActionButton.small(
-        context: context,
-        cartCount: getIt<CartCubit>().state == null
-            ? 0
-            : getIt<CartCubit>().state!.length,
-      ),
+      floatingActionButton: cartCount == null
+          ? Container()
+          : !showSearching
+              ? GFloatingActionButton(
+                  cartCount: cartCount.length, context: context)
+              : GFloatingActionButton.small(
+                  context: context,
+                  cartCount: cartCount.length,
+                ),
       bottomNavigationBar: GBottomNavigation(
         currentIndex: 2,
         onTap: (index) {},
@@ -95,9 +99,7 @@ class _PharmacyPageState extends State<PharmacyPage> {
           if (state is CartItemsLoadFail) {}
 
           if (state is DeletedCartItem) {
-            //update UI
             setState(() {});
-            // setVariables();
           }
 
           if (state is QuantityChanged) {

@@ -1,4 +1,3 @@
-import 'package:custom_pop_up_menu/custom_pop_up_menu.dart';
 import 'package:dro_hometest/core/global/extensions/number_extensions.dart';
 import 'package:dro_hometest/core/global/widgets/custom_dropdown_widget.dart';
 import 'package:dro_hometest/core/global/widgets/global_widgets.dart';
@@ -67,24 +66,21 @@ class CartListTileWidget extends StatelessWidget {
                     //   child: quantity,
                     // ),
                     Builder(builder: (context) {
-                      CustomPopupMenuController controller =
-                          CustomPopupMenuController();
                       return CustomDropdownWidget(
-                          onChange: (value) {
-                            controller.hideMenu();
-                            print(value);
-                            changeQuantity(int.parse(value));
-                          },
-                          selected: Padding(
-                            padding: const EdgeInsets.only(right: 12.0),
-                            child: quantity,
-                          ),
-                          icon: const Icon(
-                            Icons.keyboard_arrow_down_outlined,
-                            color: Color(0xFF9F5DE2),
-                            size: 20,
-                          ),
-                          controller: controller);
+                        onChange: (value) {
+                          // Navigator.pop(context);
+                          changeQuantity(int.parse(value));
+                        },
+                        selected: Padding(
+                          padding: const EdgeInsets.only(right: 12.0),
+                          child: quantity,
+                        ),
+                        icon: const Icon(
+                          Icons.keyboard_arrow_down_outlined,
+                          color: Color(0xFF9F5DE2),
+                          size: 20,
+                        ),
+                      );
                     }),
                   ]),
               padding: const EdgeInsets.symmetric(vertical: 5, horizontal: 10),

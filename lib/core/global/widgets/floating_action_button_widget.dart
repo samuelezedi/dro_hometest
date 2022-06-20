@@ -73,49 +73,56 @@ class GFloatingActionButton extends StatelessWidget {
               )
             ],
           )
-        : FloatingActionButton.extended(
-            extendedPadding: EdgeInsets.zero,
-            backgroundColor: Colors.transparent,
-            onPressed: () {},
-            label: Container(
-              padding: const EdgeInsets.all(12),
-              decoration: BoxDecoration(
-                  border: Border.all(color: Colors.white, width: 2),
-                  gradient: GWidgets.linearGradient(
-                      const Color(0xFFFE806F), const Color(0xFFE5366A)),
-                  borderRadius: BorderRadius.circular(50)),
-              child: Row(
-                children: [
-                  const Text(
-                    'Checkout',
-                    style: TextStyle(
-                        color: Colors.white,
-                        fontWeight: FontWeight.bold,
-                        fontSize: 14),
-                  ),
-                  7.horizontalGap,
-                  const Icon(
-                    HomeTestIcon.cart,
-                  ),
-                  10.horizontalGap,
-                  Container(
-                    width: 18,
-                    height: 18,
-                    child: Center(
-                      child: Text(
-                        cartCount.toString(),
-                        style: const TextStyle(
-                            fontSize: 12,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold),
+        : cartCount == 0
+            ? Container()
+            : FloatingActionButton.extended(
+                extendedPadding: EdgeInsets.zero,
+                backgroundColor: Colors.transparent,
+                onPressed: () {
+                  Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => const CartPage()));
+                },
+                label: Container(
+                  padding: const EdgeInsets.all(12),
+                  decoration: BoxDecoration(
+                      border: Border.all(color: Colors.white, width: 2),
+                      gradient: GWidgets.linearGradient(
+                          const Color(0xFFFE806F), const Color(0xFFE5366A)),
+                      borderRadius: BorderRadius.circular(50)),
+                  child: Row(
+                    children: [
+                      const Text(
+                        'Checkout',
+                        style: TextStyle(
+                            color: Colors.white,
+                            fontWeight: FontWeight.bold,
+                            fontSize: 14),
                       ),
-                    ),
-                    decoration: BoxDecoration(
-                        color: const Color(0xFFF2C94C),
-                        borderRadius: BorderRadius.circular(18)),
+                      7.horizontalGap,
+                      const Icon(
+                        HomeTestIcon.cart,
+                      ),
+                      10.horizontalGap,
+                      Container(
+                        width: 18,
+                        height: 18,
+                        child: Center(
+                          child: Text(
+                            cartCount.toString(),
+                            style: const TextStyle(
+                                fontSize: 12,
+                                color: Colors.black,
+                                fontWeight: FontWeight.bold),
+                          ),
+                        ),
+                        decoration: BoxDecoration(
+                            color: const Color(0xFFF2C94C),
+                            borderRadius: BorderRadius.circular(18)),
+                      ),
+                    ],
                   ),
-                ],
-              ),
-            ));
+                ));
   }
 }

@@ -32,8 +32,7 @@ class _DrugDetailPageState extends State<DrugDetailPage> {
   @override
   void initState() {
     super.initState();
-    print(widget.index);
-    print(widget.drug);
+
     price = double.parse(widget.drug.price.toString());
     showPrice = double.parse(widget.drug.price.toString());
   }
